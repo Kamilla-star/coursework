@@ -1,0 +1,60 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+<link rel="stylesheet" href="{% static 'css/pure-min.css' %}">
+<link rel="stylesheet" href="{% static 'css/email.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/flatpickr.min.css' %}"/>
+</head>
+<body>
+<div id="layout" class="content pure-g">
+    <div id="nav" class="pure-u">
+        <a href="#" class="nav-menu-button">Menu</a>
+                    <div class="nav-inner">
+            <button class="primary-button pure-button">TODO List</button>
+            <div class="pure-menu">
+                <ul class="pure-menu-list">                               
+    {% if user.is_authenticated %}
+        <li class="pure-menu-item"><a href="{% url 'core:dashboard' %}" class="pure-menu-link">Dashboard</a></li>
+    {% else %}
+        <li class="pure-menu-item"><a href="{% url 'core:home' %}" class="pure-menu-link">Home</a></li>
+    {% endif %}
+        <li class="pure-menu-item"><a href="{% url 'core:contact' %}" class="pure-menu-link">Contact</a></li>
+    {% if user.is_authenticated %}
+        <li class="pure-menu-item"><a href="{% url 'accounts:logout' %}" class="pure-menu-link">Sign Out</a></li>
+    {% else %}
+        <li class="pure-menu-item"><a href="{% url 'accounts:login' %}" class="pure-menu-link">Sign In</a></li>
+    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="{% static "js/yui-min.js" %}"></script>
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/flatpickr.min.js" %}"></script>
+<script>
+    YUI().use('node-base', 'node-event-delegate', function (Y) {
+
+        var menuButton = Y.one('.nav-menu-button'),
+            nav        = Y.one('#nav');
+
+        menuButton.on('click', function (e) {
+            nav.toggleClass('active');
+        });
+        var example = flatpickr('#flatpickr', {
+            dateFormat: 'm/d/Y',
+            minDate: Date(),
+        });
+
+    });
+</script>
+
+</body>
+</html>
